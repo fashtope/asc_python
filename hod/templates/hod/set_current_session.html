@@ -1,0 +1,73 @@
+{% extends 'hod/base.html' %} 
+{% load static %} 
+{% block page_title %} 
+Manage session 
+{% endblock page_title %} 
+{% block main_content %}
+<section class="content">
+  <div class="container-fluid">
+    <div class="card card-primary">
+      {% comment %} <div class="card-header">
+        <h3 class="card-title">Manage session</h3>
+      </div> {% endcomment %}
+      <!-- /.card-header -->
+      <!-- form start -->
+
+     
+        <div class="card-header">
+          <h3 class="card-title">Manage sessions</h3>
+
+          <div class="card-tools">
+            <div class="input-group input-group-sm" style="width: 150px">
+              <input
+                type="text"
+                name="table_search"
+                class="form-control float-right"
+                placeholder="Search"
+              />
+
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-default">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0">
+        <form method="POST"  enctype="multipart/form-data">
+                {% csrf_token %}
+          <table class="table text-nowrap">
+            <thead>
+              <tr>
+                <th>Sessions</th>
+                <th>Current Session</th>
+              </tr>
+            </thead>
+            <tbody>
+                <div class="form-check">
+                {% for session in sessions %}
+                <tr>
+                    <td><label for="{{ session.id }}">{{ session }}</label></td>
+                    <td>
+                        <input class="form-check-input" type="radio" id="{{ session.id }}" value="{{ session.id }}" name="current_session" {% if session.is_current_session %} checked {% endif %}>
+                    </td>
+                </tr>
+                {% endfor %}
+            </div>
+            </tbody>
+          </table>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary btn-block">Set Current Session</button>
+          </div>
+        </form>
+        </div>
+        <!-- /.card-body -->
+      
+      <!-- /.card -->
+    </div>
+  </div>
+</section>
+
+{% endblock %}

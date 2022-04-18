@@ -1,0 +1,140 @@
+{% extends 'student/base.html' %}
+{% block page_title %} 
+Register Course
+{% endblock page_title %}
+{% load static %}
+
+{% block main_content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Register Courses</h3>
+                <input type="button" id="add_course" class='btn float-right' value="Add course"/>
+            </div>
+        </div>
+        <div class="card-body">
+            <form id="course_form">
+                {% csrf_token %}
+                <div class="course_field">
+                    <div class="each-field row">
+                        <div class="col-3">
+                            <label>Course code</label>
+                            <select class="form-control course_code" data-sub_course_code_id="1" name="course_code[]" title="The course form" class="course_code[]" >
+                                <option value="">Select a Course</option>
+                                {% for course in courses %}
+                                <option value="{{ course.id }}">{{ course.code }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-8">
+                            <label>Course title</label>
+                            <input id="course_title1" type="text" disabled class="form-control" placeholder="Course title">
+                        </div>
+                        <div class="col-1">
+                            <label >Delete</label>
+                            <input value="Remove" type="button" class="form-control btn-danger btn_remove">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary btn-block">
+                      Register Courses
+                    </button>
+                </div>
+            </form> 
+        </div>
+        <!-- /.card-body -->
+    </div>
+</section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+
+        var count = 1;
+        var limit = 10;
+
+        $('#add_course').click(function(){
+            count++;
+            html=`
+            <div class="each-field row">
+                <br>
+                <div class="col-3">
+                    <label>Course code</label>
+                    <select class="form-control course_code" data-sub_course_code_id="${count}" name="course_code[]" title="The course form" id="course_code${count}" >\
+                        <option value="" >Select a course</option>
+                        {% for course in courses %}
+                        <option value="{{ course.id }}">{{ course.code }}</option>\
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-8">
+                    <label>Course title</label>
+                    <input id="course_title${count}" name='course_title[]' type="text" disabled class="form-control" placeholder="Course title">\
+                </div>
+                <div class="col-1">
+                    <label >Delete</label>
+                    <input class="form-control btn-danger btn_remove" value="Remove" type="button" >
+                </div>
+            </div>`;
+
+
+            var course_form = $('.course_field');
+            
+            if (count < limit){
+                course_form.append(html);
+            } else {
+                alert('Cant have more than 10');
+            }
+        })
+        
+        $(document).on('click', '.btn_remove', function(){
+            $(this).closest('.row').remove();
+        });
+
+        $(document).on('change', `.course_code`, function(){
+            var $this = $(this);
+
+            var course_code = $this.val();
+            var sub_course_code = $this.data('sub_course_code_id');
+            //console.log(course_code)
+        
+            if(course_code != ''){
+                $.ajax({
+                    type: 'GET',
+                    url: "{% url 'student:get_courses' %}",
+                    success: function(response){
+                        let course_title = ''
+                        response.courses.forEach(course=>{
+                            if (course.id==course_code){
+                                course_title=course.title
+                                console.log(course_title)
+                                $(`#course_title${sub_course_code}`).val(course_title) 
+                                
+                            }
+                        })
+                    },
+                    error: function(response){
+                        alert('an error happened')
+                    }
+                })
+            }
+        })
+        $('#course_form').submit(function(e){
+            e.preventDefault()
+            $.ajax({
+                url: "{% url 'student:save_courses' %}",
+                method: 'POST',
+                data:$(this).serialize(),
+                success: function(){
+                    alert('Successful')
+                }
+            })
+        })
+    })
+
+    
+    
+</script>
+
+{% endblock main_content %}

@@ -1,0 +1,22 @@
+{% extends 'hod/base.html' %} 
+{% load static %} 
+{% block page_title %} 
+Add Course 
+{% endblock page_title %} 
+{% block main_content %}
+<section class="content">
+  <div class="container-fluid">
+    <div class="card card-primary">
+      <div class="card-header">
+        <h3 class="card-title">Add Course</h3>
+      </div>
+      <!-- /.card-header -->
+      <!-- form start -->
+      
+      {% include 'hod/form.html' with form=form messages=messages button_text="Add Course" %}
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

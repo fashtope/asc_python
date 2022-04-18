@@ -1,0 +1,73 @@
+{% extends 'hod/base.html' %} 
+{% load static %} 
+{% block page_title %} 
+Manage semester 
+{% endblock page_title %} 
+{% block main_content %}
+<section class="content">
+  <div class="container-fluid">
+    <div class="card card-primary">
+      {% comment %} <div class="card-header">
+        <h3 class="card-title">Manage semester</h3>
+      </div> {% endcomment %}
+      <!-- /.card-header -->
+      <!-- form start -->
+
+     
+        <div class="card-header">
+          <h3 class="card-title">Manage semesters</h3>
+
+          <div class="card-tools">
+            <div class="input-group input-group-sm" style="width: 150px">
+              <input
+                type="text"
+                name="table_search"
+                class="form-control float-right"
+                placeholder="Search"
+              />
+
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-default">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0">
+        <form method="POST"  enctype="multipart/form-data">
+                {% csrf_token %}
+          <table class="table text-nowrap">
+            <thead>
+              <tr>
+                <th>semesters</th>
+                <th>Current semester</th>
+              </tr>
+            </thead>
+            <tbody>
+                <div class="form-check">
+                {% for semester in semesters %}
+                <tr>
+                    <td><label for="{{ semester.id }}">{{ semester }}</label></td>
+                    <td>
+                        <input class="form-check-input" type="radio" id="{{ semester.id }}" value="{{ semester.id }}" name="current_semester" {% if semester.is_current_semester %} checked {% endif %}>
+                    </td>
+                </tr>
+                {% endfor %}
+            </div>
+            </tbody>
+          </table>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary btn-block">Set Current semester</button>
+          </div>
+        </form>
+        </div>
+        <!-- /.card-body -->
+      
+      <!-- /.card -->
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'hod/base.html' %} {% block page_title %} Edit {{ lecturer.first_name }} {{ lecturer.last_name }}
+{% endblock page_title %} {% load static %} {% block main_content %}
+<section class="content">
+  <div class="container-fluid">
+    <div class="card card-primary">
+      <div class="card-header">
+        <h3 class="card-title">Add lecturer</h3>
+      </div>
+      <!-- /.card-header -->
+      <!-- form start -->
+      <form method="POST">
+        {% csrf_token %}
+        <div class="card-body">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              name="title"
+              value="{{ lecturer.title }}"
+              placeholder="Enter title"
+            />
+          </div>
+          <div class="form-group">
+            <label for="firstname">Firstname</label>
+            <input
+              type="text"
+              class="form-control"
+              name="firstname"
+              value="{{ lecturer.admin.first_name }}"
+              placeholder="Enter firstname"
+            />
+          </div>
+          <div class="form-group">
+            <label for="lastname">Lastname</label>
+            <input
+              type="text"
+              class="form-control"
+              value="{{ lecturer.admin.last_name }}"
+              name="lastname"
+              placeholder="Enter lastname"
+            />
+          </div>
+          <div class="form-group">
+            <label for="address">Home address</label>
+            <input
+              type="text"
+              class="form-control"
+              value="{{ lecturer.address }}"
+              name="address"
+              placeholder="Enter home address"
+            />
+          </div>
+          <div class="form-group">
+            <label for="lecturer_number">lecturer number</label>
+            <input
+              type="text"
+              class="form-control"
+              name="lecturer_number"
+              value="{{ lecturer.lecturer_number }}"
+              placeholder="Enter lecturer number"
+            />
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              class="form-control"
+              name="username"
+              value="{{ lecturer.admin.username }}"
+              placeholder="Enter Username"
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input
+              type="email"
+              class="form-control"
+              placeholder="Enter email"
+              value="{{ lecturer.admin.email }}"
+              name="email"
+            />
+          </div>
+          <!-- /.card-body -->
+          <div class="form-group">
+            
+            {% if messages %}
+            {% for message in messages %}
+            {% if message.tags == 'error' %}
+            <div class="alert alert-danger" style="margin-top: 10px">{{ message }}</div>
+            {% endif %}
+            {% if message.tags == 'success' %}
+            <div class="alert alert-success" style="margin-top: 10px">{{ message }}</div>
+            {% endif %}
+            {% endfor %}
+            
+            
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button type="submit" class="btn btn-primary btn-block">Edit lecturer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

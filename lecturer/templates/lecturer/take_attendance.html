@@ -1,0 +1,58 @@
+{% extends 'lecturer/base.html' %}
+{% block page_title %} 
+Take Attendance
+{% endblock page_title %}
+{% load static %}
+
+{% block main_content %}
+<section class="content">
+  <div class="container-fluid">
+    <div class="card card-primary">
+      <div class="card-header">
+        <h3 class="card-title">Take Attendance</h3>
+      </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label>Course Select</label>
+            <select class="form-control" name="course" id="course">
+                {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.title }}</option>
+                {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" name="attendance_date" class="form-control" id="attendance_date">
+          </div>
+
+          <!-- /.card-body -->
+          <div class="form-group">
+            {% if messages %}
+            
+            {% for message in messages %} 
+            {% if message.tags == 'error' %}
+            <div class="alert alert-danger" style="margin-top: 10px">
+              {{ message }}
+            </div>
+            {% endif %} 
+            {% if message.tags == 'success' %}
+            <div class="alert alert-success" style="margin-top: 10px">
+              {{ message }}
+            </div>
+            {% endif %} 
+            {% endfor %} 
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button type="submit" class="btn btn-primary btn-block">
+            Fetch Students
+          </button>
+        </div>
+    </div>
+  </div>
+</section>
+
+{% endblock main_content %}
+
